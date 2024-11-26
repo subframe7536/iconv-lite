@@ -5,6 +5,8 @@ This is a fork of [iconv-lite](https://github.com/ashtuchkin/iconv-lite) with th
 - Bundled encodings
 - Replace `safer-buffer` with `buffer`
 - Improved Typescript definitions
+- Remove stream support
+- ESM build
 
 ## iconv-lite: Pure JS character encoding conversion
 
