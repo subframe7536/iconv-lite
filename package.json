@@ -13,6 +13,9 @@
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
     "exports": {
         ".": {
             "import": "./dist/index.mjs",
@@ -25,15 +28,21 @@
         "type": "git",
         "url": "git://github.com/subframe7536/iconv-lite.git"
     },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org"
+    },
     "scripts": {
         "coverage": "c8 _mocha --grep .",
         "test": "mocha --reporter spec --grep .",
-        "build": "tsup"
+        "build": "tsup",
+        "release": "pnpm run build && bumpp && npm publish"
     },
     "browser": {
         "stream": false
     },
     "devDependencies": {
+        "bumpp": "^9.8.1",
         "iconv": "^3.0.1",
         "semver": "^7.6.3",
         "tsup": "^8.3.5",
