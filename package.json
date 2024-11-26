@@ -1,5 +1,6 @@
 {
     "name": "@subframe7536/iconv-lite",
+    "type": "module",
     "description": "Convert character encodings in pure javascript.",
     "version": "0.7.0",
     "license": "MIT",
@@ -10,18 +11,12 @@
         "icu"
     ],
     "author": "Alexander Shtuchkin <ashtuchkin@gmail.com>",
-    "main": "./dist/index.js",
-    "module": "./dist/index.mjs",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "files": [
         "dist"
     ],
-    "exports": {
-        ".": {
-            "import": "./dist/index.mjs",
-            "require": "./dist/index.js"
-        }
-    },
     "homepage": "https://github.com/subframe7536/iconv-lite",
     "bugs": "https://github.com/subframe7536/iconv-lite/issues",
     "repository": {
@@ -42,13 +37,11 @@
         "stream": false
     },
     "devDependencies": {
+        "@types/node": "^22.10.0",
         "bumpp": "^9.8.1",
         "iconv": "^3.0.1",
         "semver": "^7.6.3",
         "tsup": "^8.3.5",
         "typescript": "^5.7.2"
-    },
-    "dependencies": {
-        "buffer": "^6.0.3"
     }
 }

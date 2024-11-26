@@ -1,81 +1,73 @@
-"use strict";
-var Buffer = require("buffer").Buffer;
-
-// Note: UTF16-LE (or UCS2) codec is Node.js native. See encodings/internal.js
-
-// == UTF16-BE codec. ==========================================================
-
-exports.utf16be = Utf16BECodec;
-function Utf16BECodec() {
+export const utf16be = Utf16BECodec;
+class Utf16BECodec {
+    constructor() {
+    }
+    encoder = Utf16BEEncoder;
+    decoder = Utf16BEDecoder;
+    bomAware = true;
 }
 
-Utf16BECodec.prototype.encoder = Utf16BEEncoder;
-Utf16BECodec.prototype.decoder = Utf16BEDecoder;
-Utf16BECodec.prototype.bomAware = true;
 
 
 // -- Encoding
 
-function Utf16BEEncoder() {
-}
-
-Utf16BEEncoder.prototype.write = function(str) {
-    var buf = Buffer.from(str, 'ucs2');
-    for (var i = 0; i < buf.length; i += 2) {
-        var tmp = buf[i]; buf[i] = buf[i+1]; buf[i+1] = tmp;
+class Utf16BEEncoder {
+    constructor() {
     }
-    return buf;
+    write(str) {
+        var buf = Buffer.from(str, 'ucs2');
+        for (var i = 0; i < buf.length; i += 2) {
+            var tmp = buf[i]; buf[i] = buf[i + 1]; buf[i + 1] = tmp;
+        }
+        return buf;
+    }
+    end() {
+    }
 }
 
-Utf16BEEncoder.prototype.end = function() {
-}
+
 
 
 // -- Decoding
 
-function Utf16BEDecoder() {
-    this.overflowByte = -1;
-}
-
-Utf16BEDecoder.prototype.write = function(buf) {
-    if (buf.length == 0)
-        return '';
-
-    var buf2 = Buffer.alloc(buf.length + 1),
-        i = 0, j = 0;
-
-    if (this.overflowByte !== -1) {
-        buf2[0] = buf[0];
-        buf2[1] = this.overflowByte;
-        i = 1; j = 2;
+class Utf16BEDecoder {
+    constructor() {
+        this.overflowByte = -1;
     }
+    write(buf) {
+        if (buf.length == 0)
+            return '';
 
-    for (; i < buf.length-1; i += 2, j+= 2) {
-        buf2[j] = buf[i+1];
-        buf2[j+1] = buf[i];
+        var buf2 = Buffer.alloc(buf.length + 1), i = 0, j = 0;
+
+        if (this.overflowByte !== -1) {
+            buf2[0] = buf[0];
+            buf2[1] = this.overflowByte;
+            i = 1; j = 2;
+        }
+
+        for (; i < buf.length - 1; i += 2, j += 2) {
+            buf2[j] = buf[i + 1];
+            buf2[j + 1] = buf[i];
+        }
+
+        this.overflowByte = (i == buf.length - 1) ? buf[buf.length - 1] : -1;
+
+        return buf2.slice(0, j).toString('ucs2');
     }
-
-    this.overflowByte = (i == buf.length-1) ? buf[buf.length-1] : -1;
-
-    return buf2.slice(0, j).toString('ucs2');
-}
-
-Utf16BEDecoder.prototype.end = function() {
-    this.overflowByte = -1;
+    end() {
+        this.overflowByte = -1;
+    }
 }
 
 
-// == UTF-16 codec =============================================================
-// Decoder chooses automatically from UTF-16LE and UTF-16BE using BOM and space-based heuristic.
-// Defaults to UTF-16LE, as it's prevalent and default in Node.
-// http://en.wikipedia.org/wiki/UTF-16 and http://encoding.spec.whatwg.org/#utf-16le
-// Decoder default can be changed: iconv.decode(buf, 'utf16', {defaultEncoding: 'utf-16be'});
 
-// Encoder uses UTF-16LE and prepends BOM (which can be overridden with addBOM: false).
 
-exports.utf16 = Utf16Codec;
-function Utf16Codec(codecOptions, iconv) {
-    this.iconv = iconv;
+export const utf16 = Utf16Codec;
+class Utf16Codec {
+    constructor(codecOptions, iconv) {
+        this.iconv = iconv;
+    }
 }
 
 Utf16Codec.prototype.encoder = Utf16Encoder;
@@ -84,74 +76,76 @@ Utf16Codec.prototype.decoder = Utf16Decoder;
 
 // -- Encoding (pass-through)
 
-function Utf16Encoder(options, codec) {
-    options = options || {};
-    if (options.addBOM === undefined)
-        options.addBOM = true;
-    this.encoder = codec.iconv.getEncoder('utf-16le', options);
+class Utf16Encoder {
+    constructor(options, codec) {
+        options = options || {};
+        if (options.addBOM === undefined)
+            options.addBOM = true;
+        this.encoder = codec.iconv.getEncoder('utf-16le', options);
+    }
+    write(str) {
+        return this.encoder.write(str);
+    }
+    end() {
+        return this.encoder.end();
+    }
 }
 
-Utf16Encoder.prototype.write = function(str) {
-    return this.encoder.write(str);
-}
 
-Utf16Encoder.prototype.end = function() {
-    return this.encoder.end();
-}
 
 
 // -- Decoding
 
-function Utf16Decoder(options, codec) {
-    this.decoder = null;
-    this.initialBufs = [];
-    this.initialBufsLen = 0;
+class Utf16Decoder {
+    constructor(options, codec) {
+        this.decoder = null;
+        this.initialBufs = [];
+        this.initialBufsLen = 0;
 
-    this.options = options || {};
-    this.iconv = codec.iconv;
-}
-
-Utf16Decoder.prototype.write = function(buf) {
-    if (!this.decoder) {
-        // Codec is not chosen yet. Accumulate initial bytes.
-        this.initialBufs.push(buf);
-        this.initialBufsLen += buf.length;
-
-        if (this.initialBufsLen < 16) // We need more bytes to use space heuristic (see below)
-            return '';
-
-        // We have enough bytes -> detect endianness.
-        var encoding = detectEncoding(this.initialBufs, this.options.defaultEncoding);
-        this.decoder = this.iconv.getDecoder(encoding, this.options);
-
-        var resStr = '';
-        for (var i = 0; i < this.initialBufs.length; i++)
-            resStr += this.decoder.write(this.initialBufs[i]);
-
-        this.initialBufs.length = this.initialBufsLen = 0;
-        return resStr;
+        this.options = options || {};
+        this.iconv = codec.iconv;
     }
+    write(buf) {
+        if (!this.decoder) {
+            // Codec is not chosen yet. Accumulate initial bytes.
+            this.initialBufs.push(buf);
+            this.initialBufsLen += buf.length;
 
-    return this.decoder.write(buf);
-}
+            if (this.initialBufsLen < 16) // We need more bytes to use space heuristic (see below)
+                return '';
 
-Utf16Decoder.prototype.end = function() {
-    if (!this.decoder) {
-        var encoding = detectEncoding(this.initialBufs, this.options.defaultEncoding);
-        this.decoder = this.iconv.getDecoder(encoding, this.options);
+            // We have enough bytes -> detect endianness.
+            var encoding = detectEncoding(this.initialBufs, this.options.defaultEncoding);
+            this.decoder = this.iconv.getDecoder(encoding, this.options);
 
-        var resStr = '';
-        for (var i = 0; i < this.initialBufs.length; i++)
-            resStr += this.decoder.write(this.initialBufs[i]);
+            var resStr = '';
+            for (var i = 0; i < this.initialBufs.length; i++)
+                resStr += this.decoder.write(this.initialBufs[i]);
 
-        var trail = this.decoder.end();
-        if (trail)
-            resStr += trail;
+            this.initialBufs.length = this.initialBufsLen = 0;
+            return resStr;
+        }
 
-        this.initialBufs.length = this.initialBufsLen = 0;
-        return resStr;
+        return this.decoder.write(buf);
     }
-    return this.decoder.end();
+    end() {
+        if (!this.decoder) {
+            var encoding = detectEncoding(this.initialBufs, this.options.defaultEncoding);
+            this.decoder = this.iconv.getDecoder(encoding, this.options);
+
+            var resStr = '';
+            for (var i = 0; i < this.initialBufs.length; i++)
+                resStr += this.decoder.write(this.initialBufs[i]);
+
+            var trail = this.decoder.end();
+            if (trail)
+                resStr += trail;
+
+            this.initialBufs.length = this.initialBufsLen = 0;
+            return resStr;
+        }
+        return this.decoder.end();
+    }
 }
 
 function detectEncoding(bufs, defaultEncoding) {
