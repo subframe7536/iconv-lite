@@ -1,5 +1,5 @@
 "use strict";
-var Buffer = require("safer-buffer").Buffer;
+var Buffer = require("buffer").Buffer;
 
 // Export Node.js internal encodings.
 
@@ -148,7 +148,7 @@ function InternalDecoderCesu8(options, codec) {
 }
 
 InternalDecoderCesu8.prototype.write = function(buf) {
-    var acc = this.acc, contBytes = this.contBytes, accBytes = this.accBytes, 
+    var acc = this.acc, contBytes = this.contBytes, accBytes = this.accBytes,
         res = '';
     for (var i = 0; i < buf.length; i++) {
         var curByte = buf[i];

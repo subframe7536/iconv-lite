@@ -1,6 +1,6 @@
 var assert = require('assert'),
     unorm = require('unorm'),
-    Buffer = require('safer-buffer').Buffer,
+    Buffer = require('buffer').Buffer,
     iconv = require(__dirname+'/../'),
     Iconv = require('iconv').Iconv;
 
@@ -77,7 +77,7 @@ describe("Full SBCS encoding tests", function() {
                 if (errors.length > 0)
                     assert.fail(null, null, "Decoding mismatch: <input> | <expected> | <actual> | <expected char> | <actual char>\n"
                         + errors.map(function(err) {
-                        return "          " + spacify2(err.input) + " | " + strToHex(err.strExpected) + " | " + strToHex(err.strActual) + " | " + 
+                        return "          " + spacify2(err.input) + " | " + strToHex(err.strExpected) + " | " + strToHex(err.strActual) + " | " +
                             err.strExpected + " | " + err.strActual;
                     }).join("\n") + "\n       ");
             });
@@ -116,7 +116,7 @@ describe("Full SBCS encoding tests", function() {
                             // Semicompose without swapping.
                             var strDenorm2 = unorm.nfc(strDenorm[0] + strDenorm[1]) + strDenorm[2];
                             if (strExpected == iconv.encode(strDenorm2, enc).toString('hex'))
-                                continue;                        
+                                continue;
 
                             // Swap combining characters if they have different combining classes, making swap unicode-equivalent.
                             var strDenorm3 = unorm.nfc(strDenorm[0] + strDenorm[2]) + strDenorm[1];
@@ -131,7 +131,7 @@ describe("Full SBCS encoding tests", function() {
                     }
 
                     // Iconv sometimes treats some characters as equivalent. Check it and skip.
-                    if (iconvEquivChars[enc] && iconvEquivChars[enc][str] && 
+                    if (iconvEquivChars[enc] && iconvEquivChars[enc][str] &&
                         strExpected == iconv.encode(iconvEquivChars[enc][str], enc).toString('hex'))
                         continue;
 

@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    Buffer = require('safer-buffer').Buffer,
+    Buffer = require('buffer').Buffer,
     semver = require('semver'),
     iconv = require(__dirname+'/../');
 
@@ -36,7 +36,7 @@ function feeder(chunks) {
     stream._read = function() {
         writeChunk();
     }
-    
+
     return stream;
 }
 
@@ -90,7 +90,7 @@ function checkStreamOutput(options) {
                                 res = Buffer.concat(res);
                                 if (r[1])
                                     res = res.toString(r[1]); // Convert to string to make comparing buffers easier.
-                            }                        
+                            }
                             else if (options.outputType == 'string')
                                 res = res.join('');
 
@@ -113,7 +113,7 @@ function checkEncodeStream(opts) {
     if (opts.outputType == null) opts.outputType = 'buffer-hex';
     if (Buffer.isBuffer(opts.output) && opts.outputType == 'buffer-hex')
         opts.output = opts.output.toString('hex');
-    
+
     opts.checkOutput = opts.checkOutput || function(res) {
         assert.equal(res, opts.output);
     };

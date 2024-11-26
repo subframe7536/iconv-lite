@@ -1,9 +1,9 @@
 var assert  = require('assert'),
-    Buffer  = require('safer-buffer').Buffer,
+    Buffer  = require('buffer').Buffer,
     iconv   = require(__dirname + '/../');
 
 describe("ShiftJIS tests", function() {
-    it("ShiftJIS correctly encoded/decoded", function() {    
+    it("ShiftJIS correctly encoded/decoded", function() {
         var testString = "中文abc", //unicode contains ShiftJIS-code and ascii
             testStringBig5Buffer = Buffer.from([0x92, 0x86, 0x95, 0xb6, 0x61, 0x62, 0x63]),
             testString2 = '測試',

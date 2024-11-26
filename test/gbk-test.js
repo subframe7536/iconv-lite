@@ -1,18 +1,18 @@
 var fs      = require('fs'),
     assert  = require('assert'),
-    Buffer  = require('safer-buffer').Buffer,
+    Buffer  = require('buffer').Buffer,
     iconv   = require(__dirname+'/../');
 
 var testString = "中国abc",//unicode contains GBK-code and ascii
     testStringGBKBuffer = Buffer.from([0xd6,0xd0,0xb9,0xfa,0x61,0x62,0x63]);
 
 describe("GBK tests", function() {
-    it("GBK correctly encoded/decoded", function() {    
+    it("GBK correctly encoded/decoded", function() {
         assert.strictEqual(iconv.encode(testString, "GBK").toString('binary'), testStringGBKBuffer.toString('binary'));
         assert.strictEqual(iconv.decode(testStringGBKBuffer, "GBK"), testString);
     });
 
-    it("GB2312 correctly encoded/decoded", function() {    
+    it("GB2312 correctly encoded/decoded", function() {
         assert.strictEqual(iconv.encode(testString, "GB2312").toString('binary'), testStringGBKBuffer.toString('binary'));
         assert.strictEqual(iconv.decode(testStringGBKBuffer, "GB2312"), testString);
     });

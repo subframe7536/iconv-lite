@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    Buffer = require('safer-buffer').Buffer,
+    Buffer = require('buffer').Buffer,
     iconv = require(__dirname+'/../');
 
 // These tests are mostly from https://github.com/kkaefer/utf7
@@ -57,7 +57,7 @@ describe("UTF-7 codec", function() {
         // Slashes in the beginning.
         assert.equal(iconv.decode(Buffer.from('+///typh2VDIf7Q-'), 'utf-7'), '\uffff\uedca\u9876\u5432\u1fed');
         assert.equal(iconv.decode(Buffer.from('+///typh2VDIf7Q'), 'utf-7'), '\uffff\uedca\u9876\u5432\u1fed');
-    
+
         // + sign around non-ASCII chars
         assert.equal(iconv.decode(Buffer.from('+AOQ-+-+AOQ-+-+AOQ-'), 'utf-7'), '\u00E4+\u00E4+\u00E4');
         //assert.equal(iconv.decode(Buffer.from('+AOQ++AOQ+-+AOQ'), 'utf-7'), '\u00E4+\u00E4+\u00E4');
@@ -78,7 +78,7 @@ describe("UTF-7 codec", function() {
         // Surrogate pair
         assert.equal(iconv.decode(Buffer.from("+2ADcAA?"), 'utf-7'), "\ud800\udc00?");
         assert.equal(iconv.decode(Buffer.from("+2ADcAA"), 'utf-7'), "\ud800\udc00");
-        
+
         // Two UTF-16 code units
         assert.equal(iconv.decode(Buffer.from("+AMAA4A?"), 'utf-7'), "\u00c0\u00e0?");
         assert.equal(iconv.decode(Buffer.from("+AMAA4A"), 'utf-7'), "\u00c0\u00e0");

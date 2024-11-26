@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    Buffer = require('safer-buffer').Buffer,
+    Buffer = require('buffer').Buffer,
     iconv = require(__dirname+'/../'),
     Iconv = require('iconv').Iconv;
 

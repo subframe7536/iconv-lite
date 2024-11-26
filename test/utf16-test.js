@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    Buffer = require('safer-buffer').Buffer,
+    Buffer = require('buffer').Buffer,
     iconv = require(__dirname+'/../');
 
 var testStr = "1aя中文☃💩";
@@ -29,7 +29,7 @@ describe("UTF-16 encoder", function() {
     });
 
     it("can use other encodings, for example UTF-16LE, with BOM", function() {
-        assert.equal(iconv.encode(testStr, "utf-16", {use: 'UTF-16LE'}).toString('hex'), 
+        assert.equal(iconv.encode(testStr, "utf-16", {use: 'UTF-16LE'}).toString('hex'),
             utf16leBOM.toString('hex') + Buffer.from(testStr, 'ucs2').toString('hex'));
     });
 });

@@ -1,7 +1,6 @@
-var fs  = require("fs");
-var path = require("path");
-var Iconv  = require("iconv").Iconv;
-var Buffer = require("safer-buffer").Buffer;
+import { writeFileSync } from "fs";
+import { join } from "path";
+import { Iconv } from "iconv";
 
 // Generate encoding families using original iconv.
 var destFileName = "encodings/sbcs-data-generated.js";
@@ -42,13 +41,13 @@ var encodingFamilies = [
     },
     {
         // Macintosh code pages http://www.unicode.org/Public/MAPPINGS/VENDORS/APPLE/
-        encodings: ["macCroatian", "macCyrillic", "macGreek", 
-                    "macIceland", "macRoman", "macRomania", 
+        encodings: ["macCroatian", "macCyrillic", "macGreek",
+                    "macIceland", "macRoman", "macRomania",
                     "macThai", "macTurkish", "macUkraine"],
     },
     {
         // Additional code pages http://www.unicode.org/Public/MAPPINGS/VENDORS/MISC/ and others.
-        encodings: ["KOI8-R", "KOI8-U", "KOI8-RU", "KOI8-T", "ARMSCII-8", "RK1048", "TCVN", 
+        encodings: ["KOI8-R", "KOI8-U", "KOI8-RU", "KOI8-T", "ARMSCII-8", "RK1048", "TCVN",
                     "GEORGIAN-ACADEMY", "GEORGIAN-PS", "PT154", "VISCII", "ISO646-CN", "ISO646-JP",
                     "HP-ROMAN8", "MACINTOSH", "ASCII", "TIS620"],
     },
@@ -63,7 +62,7 @@ encodingFamilies.forEach(function(family){
         if (family.convert)
             encoding = family.convert(encoding);
 
-        var encodingIconvName = encoding.name ? encoding.name : encoding; 
+        var encodingIconvName = encoding.name ? encoding.name : encoding;
         var encodingName = encodingIconvName.replace(/[-_]/g, "").toLowerCase();
 
         encodings[encodingName] = {
@@ -79,9 +78,9 @@ encodingFamilies.forEach(function(family){
 });
 
 // Write encodings.
-fs.writeFileSync(path.join(__dirname, "..", destFileName), 
+writeFileSync(join(process.cwd(), destFileName),
     "\"use strict\";\n\n// Generated data for sbcs codec. Don't edit manually. Regenerate using generation/gen-sbcs.js script.\n"+
-    "module.exports = "+JSON.stringify(encodings, undefined, "  "));
+    "export default "+JSON.stringify(encodings, undefined, "  "));
 
 
 function generateCharsString(encoding) {
@@ -93,7 +92,7 @@ function generateCharsString(encoding) {
     for (var b = 0x0; b < 0x100; b++) {
         try {
             var convertedChar = iconvToUtf8.convert(Buffer.from([b])).toString();
-            
+
             if (convertedChar.length != 1)
                 throw new Error("Single-byte encoding error: Must return single char.");
 

@@ -11,3 +11,7 @@ package-lock.json
 /coverage
 /benchmarks/node_envs
 /generation/source-data
+
+source-data
+dist
+.vscode

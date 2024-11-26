@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    Buffer = require('safer-buffer').Buffer,
+    Buffer = require('buffer').Buffer,
     iconv = require(__dirname+'/../');
 
 var baseStrings = {
@@ -51,16 +51,16 @@ describe("Test Cyrillic encodings", function() {
         var enc = encoding.variations[0];
         var key = "hi";
         describe(encoding.name+":", function() {
-            
+
             it("Convert from buffer", function() {
                 for (var key in encoding.encodedStrings)
-                    assert.strictEqual(iconv.decode(encoding.encodedStrings[key], enc), 
+                    assert.strictEqual(iconv.decode(encoding.encodedStrings[key], enc),
                         baseStrings[key]);
             });
-            
+
             it("Convert to buffer", function() {
                 for (var key in encoding.encodedStrings)
-                    assert.strictEqual(iconv.encode(baseStrings[key], enc).toString('binary'), 
+                    assert.strictEqual(iconv.encode(baseStrings[key], enc).toString('binary'),
                         encoding.encodedStrings[key].toString('binary'));
             });
 

@@ -1,5 +1,5 @@
 var assert  = require('assert'),
-    Buffer  = require('safer-buffer').Buffer,
+    Buffer  = require('buffer').Buffer,
     iconv   = require(__dirname + '/../');
 
 var testString = "中文abc", //unicode contains Big5-code and ascii
@@ -8,14 +8,14 @@ var testString = "中文abc", //unicode contains Big5-code and ascii
     testStringBig5Buffer2 = Buffer.from([0xb4, 0xfa, 0xb8, 0xd5]);
 
 describe("Big5 tests", function() {
-    it("Big5 correctly encoded/decoded", function() {    
+    it("Big5 correctly encoded/decoded", function() {
         assert.strictEqual(iconv.encode(testString, "big5").toString('hex'), testStringBig5Buffer.toString('hex'));
         assert.strictEqual(iconv.decode(testStringBig5Buffer, "big5"), testString);
         assert.strictEqual(iconv.encode(testString2, 'big5').toString('hex'), testStringBig5Buffer2.toString('hex'));
         assert.strictEqual(iconv.decode(testStringBig5Buffer2, 'big5'), testString2);
     });
 
-    it("cp950 correctly encoded/decoded", function() {    
+    it("cp950 correctly encoded/decoded", function() {
         assert.strictEqual(iconv.encode(testString, "cp950").toString('hex'), testStringBig5Buffer.toString('hex'));
         assert.strictEqual(iconv.decode(testStringBig5Buffer, "cp950"), testString);
     });
