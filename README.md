@@ -1,4 +1,4 @@
-# Fork of iconv-lite
+# @subframe7536/iconv-lite
 
 This is a fork of [iconv-lite](https://github.com/ashtuchkin/iconv-lite) with the following changes:
 
@@ -6,7 +6,7 @@ This is a fork of [iconv-lite](https://github.com/ashtuchkin/iconv-lite) with th
 - Replace `safer-buffer` with `buffer`
 - Improved Typescript definitions
 - Remove stream support
-- ESM build
+- Add ESM build
 
 ## iconv-lite: Pure JS character encoding conversion
 
