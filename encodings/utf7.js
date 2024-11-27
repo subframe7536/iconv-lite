@@ -118,11 +118,11 @@ class Utf7IMAPCodec {
     constructor(codecOptions, iconv) {
         this.iconv = iconv;
     }
+    encoder = Utf7IMAPEncoder;
+    decoder = Utf7IMAPDecoder;
+    bomAware = true;
 };
 
-Utf7IMAPCodec.prototype.encoder = Utf7IMAPEncoder;
-Utf7IMAPCodec.prototype.decoder = Utf7IMAPDecoder;
-Utf7IMAPCodec.prototype.bomAware = true;
 
 
 // -- Encoding

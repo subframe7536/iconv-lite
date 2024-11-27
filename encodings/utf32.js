@@ -181,10 +181,10 @@ class Utf32AutoCodec {
     constructor(options, iconv) {
         this.iconv = iconv;
     }
+    encoder = Utf32AutoEncoder;
+    decoder = Utf32AutoDecoder;
 }
 
-Utf32AutoCodec.prototype.encoder = Utf32AutoEncoder;
-Utf32AutoCodec.prototype.decoder = Utf32AutoDecoder;
 
 // -- Encoding
 
@@ -204,8 +204,6 @@ class Utf32AutoEncoder {
         return this.encoder.end();
     }
 }
-
-
 
 // -- Decoding
 
@@ -260,8 +258,6 @@ class Utf32AutoDecoder {
         return this.decoder.end();
     }
 }
-
-
 
 function detectEncoding(bufs, defaultEncoding) {
     var b = [];

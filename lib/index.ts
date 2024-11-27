@@ -90,7 +90,6 @@ export function getCodec(encoding: string): Codec {
         }
 
         const codecDef = (allEncodings as Record<string, any>)[enc];
-        console.log(enc, codecDef);
 
         switch (typeof codecDef) {
             case "string": // Direct alias to other encoding.

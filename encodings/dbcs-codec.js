@@ -119,9 +119,9 @@ class DBCSCodec {
 
         // Add more encoding pairs when needed.
         if (codecOptions.encodeAdd) {
-            for (var uChar in codecOptions.encodeAdd)
-                if (Object.prototype.hasOwnProperty.call(codecOptions.encodeAdd, uChar))
-                    this._setEncodeChar(uChar.charCodeAt(0), codecOptions.encodeAdd[uChar]);
+            for (const uChar of Object.keys(codecOptions.encodeAdd)) {
+                this._setEncodeChar(uChar.charCodeAt(0), codecOptions.encodeAdd[uChar]);
+            }
         }
 
         this.defCharSB = this.encodeTable[0][iconv.defaultCharSingleByte.charCodeAt(0)];
@@ -452,12 +452,6 @@ class DBCSEncoder {
     }
 }
 
-
-
-// Export for testing
-DBCSEncoder.prototype.findIdx = findIdx;
-
-
 // == Decoder ==================================================================
 
 class DBCSDecoder {
@@ -537,8 +531,8 @@ class DBCSDecoder {
 
         this.nodeIdx = nodeIdx;
         this.prevBytes = (seqStart >= 0)
-            ? Array.prototype.slice.call(buf, seqStart)
-            : prevBytes.slice(seqStart + prevOffset).concat(Array.prototype.slice.call(buf));
+            ? buf.slice(seqStart)
+            : prevBytes.slice(seqStart + prevOffset).concat(buf.slice());
 
         return newBuf.slice(0, j).toString('ucs2');
     }
