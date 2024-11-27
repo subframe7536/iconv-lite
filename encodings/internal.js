@@ -1,15 +1,3 @@
-// Export Node.js internal encodings.
-
-export const utf8 = { type: "_internal", bomAware: true };
-export const cesu8 = { type: "_internal", bomAware: true };
-export const unicode11utf8 = "utf8";
-export const ucs2 = { type: "_internal", bomAware: true };
-export const utf16le = "ucs2";
-export const binary = { type: "_internal" };
-export const base64 = { type: "_internal" };
-export const hex = { type: "_internal" };
-export const _internal = InternalCodec;
-
 //------------------------------------------------------------------------------
 
 class InternalCodec {
@@ -215,4 +203,18 @@ class InternalEncoderUtf8 {
             return Buffer.from(str, this.enc);
         }
     }
+}
+
+// Export Node.js internal encodings.
+
+export default {
+    utf8: { type: "_internal", bomAware: true },
+    cesu8: { type: "_internal", bomAware: true },
+    unicode11utf8: "utf8",
+    ucs2: { type: "_internal", bomAware: true },
+    utf16le: "ucs2",
+    binary: { type: "_internal" },
+    base64: { type: "_internal" },
+    hex: { type: "_internal" },
+    _internal: InternalCodec
 }

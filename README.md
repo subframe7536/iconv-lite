@@ -2,7 +2,7 @@
 
 This is a fork of [iconv-lite](https://github.com/ashtuchkin/iconv-lite) with the following changes:
 
-- Bundled encodings
+- Remove dynamic encodings require
 - Replace `safer-buffer` with `buffer`
 - Improved Typescript definitions
 - Remove stream support

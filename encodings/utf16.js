@@ -1,4 +1,4 @@
-export const utf16be = Utf16BECodec;
+
 class Utf16BECodec {
     constructor() {
     }
@@ -6,8 +6,6 @@ class Utf16BECodec {
     decoder = Utf16BEDecoder;
     bomAware = true;
 }
-
-
 
 // -- Encoding
 
@@ -24,9 +22,6 @@ class Utf16BEEncoder {
     end() {
     }
 }
-
-
-
 
 // -- Decoding
 
@@ -60,19 +55,14 @@ class Utf16BEDecoder {
     }
 }
 
-
-
-
 export const utf16 = Utf16Codec;
 class Utf16Codec {
     constructor(codecOptions, iconv) {
         this.iconv = iconv;
     }
+    encoder = Utf16Encoder;
+    decoder = Utf16Decoder;
 }
-
-Utf16Codec.prototype.encoder = Utf16Encoder;
-Utf16Codec.prototype.decoder = Utf16Decoder;
-
 
 // -- Encoding (pass-through)
 
@@ -90,9 +80,6 @@ class Utf16Encoder {
         return this.encoder.end();
     }
 }
-
-
-
 
 // -- Decoding
 
@@ -188,4 +175,6 @@ function detectEncoding(bufs, defaultEncoding) {
     return defaultEncoding || 'utf-16le';
 }
 
-
+export default {
+    utf16be: Utf16BECodec
+}

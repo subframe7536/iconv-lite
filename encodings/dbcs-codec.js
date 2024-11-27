@@ -1,5 +1,3 @@
-export const _dbcs = DBCSCodec;
-
 var UNASSIGNED = -1,
     GB18030_CODE = -2,
     SEQ_START  = -10,
@@ -584,3 +582,6 @@ function findIdx(table, val) {
     return l;
 }
 
+export default {
+    _dbcs: DBCSCodec
+}

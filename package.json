@@ -30,6 +30,7 @@
     "scripts": {
         "coverage": "c8 _mocha --grep .",
         "test": "mocha --reporter spec --grep .",
+        "dev": "tsup --watch",
         "build": "tsup",
         "release": "pnpm run build && bumpp && npm publish"
     },

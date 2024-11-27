@@ -1,4 +1,3 @@
-export const _sbcs = SBCSCodec;
 class SBCSCodec {
     constructor(codecOptions, iconv) {
         if (!codecOptions)
@@ -29,8 +28,6 @@ class SBCSCodec {
     decoder = SBCSDecoder;
 }
 
-
-
 class SBCSEncoder {
     constructor(options, codec) {
         this.encodeBuf = codec.encodeBuf;
@@ -45,9 +42,6 @@ class SBCSEncoder {
     end() {
     }
 }
-
-
-
 
 class SBCSDecoder {
     constructor(options, codec) {
@@ -69,5 +63,6 @@ class SBCSDecoder {
     }
 }
 
-
-
+export default {
+    _sbcs: SBCSCodec
+}

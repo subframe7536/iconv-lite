@@ -1,5 +1,5 @@
 import { PrependBOM, StripBOM } from './bom-handling.js';
-import lazyEncodings from '../encodings/index.js';
+import { default as allEncodings } from '../encodings/index.js';
 
 // Types
 export interface EncoderOptions {
@@ -89,7 +89,8 @@ export function getCodec(encoding: string): Codec {
             return _codecDataCache.get(enc)!;
         }
 
-        const codecDef = (lazyEncodings as Record<string, any>)[enc];
+        const codecDef = (allEncodings as Record<string, any>)[enc];
+        console.log(enc, codecDef);
 
         switch (typeof codecDef) {
             case "string": // Direct alias to other encoding.

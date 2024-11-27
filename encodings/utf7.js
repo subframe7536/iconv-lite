@@ -1,5 +1,4 @@
-export const utf7 = Utf7Codec;
-export const unicode11utf7 = 'utf7'; // Alias UNICODE-1-1-UTF-7
+
 class Utf7Codec {
     constructor(codecOptions, iconv) {
         this.iconv = iconv;
@@ -111,8 +110,8 @@ var plusChar = '+'.charCodeAt(0),
     minusChar = '-'.charCodeAt(0),
     andChar = '&'.charCodeAt(0);
 
-
-
+var base64IMAPChars = base64Chars.slice();
+base64IMAPChars[','.charCodeAt(0)] = true;
 
 export const utf7imap = Utf7IMAPCodec;
 class Utf7IMAPCodec {
@@ -267,9 +266,7 @@ class Utf7IMAPDecoder {
     }
 }
 
-var base64IMAPChars = base64Chars.slice();
-base64IMAPChars[','.charCodeAt(0)] = true;
-
-
-
-
+export default {
+    utf7: Utf7Codec,
+    unicode11utf7: 'utf7' // Alias UNICODE-1-1-UTF-7
+}

@@ -1,9 +1,4 @@
-export const utf32le = { type: '_utf32', isLE: true };
-export const utf32be = { type: '_utf32', isLE: false };
 
-export const ucs4le = 'utf32le';
-export const ucs4be = 'utf32be';
-export const _utf32 = Utf32Codec;
 
 class Utf32Codec {
     constructor(codecOptions, iconv) {
@@ -312,4 +307,12 @@ function detectEncoding(bufs, defaultEncoding) {
 
     // Couldn't decide (likely all zeros or not enough data).
     return defaultEncoding || 'utf-32le';
+}
+
+export default {
+    utf32le: { type: '_utf32', isLE: true },
+    utf32be: { type: '_utf32', isLE: false },
+    ucs4le: 'utf32le',
+    ucs4be: 'utf32be',
+    _utf32: Utf32Codec
 }
