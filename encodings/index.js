@@ -1,23 +1,23 @@
-"use strict"
-
-var mergeModules = require("../lib/helpers/merge-exports")
-
 // Update this array if you add/rename/remove files in this directory.
 // We support Browserify by skipping automatic module discovery and requiring modules directly.
-var modules = [
-  require("./internal"),
-  require("./utf32"),
-  require("./utf16"),
-  require("./utf7"),
-  require("./sbcs-codec"),
-  require("./sbcs-data"),
-  require("./sbcs-data-generated"),
-  require("./dbcs-codec"),
-  require("./dbcs-data")
-]
+import { default as internal } from './internal.js';
+import { default as utf32 } from './utf32.js';
+import { default as utf16 } from './utf16.js';
+import { default as utf7 } from './utf7.js';
+import { default as sbcsCodec } from './sbcs-codec.js';
+import { default as dbcsCodec } from './dbcs-codec.js';
+import { default as sbcsData } from './sbcs-data.js';
+import { default as sbcsDataGenerated } from './sbcs-data-generated.js';
+import { default as dbcsData } from './dbcs-data.js';
 
-// Put all encoding/alias/codec definitions to single object and export it.
-for (var i = 0; i < modules.length; i++) {
-  var module = modules[i]
-  mergeModules(exports, module)
-}
+export default {
+    ...internal,
+    ...utf32,
+    ...utf16,
+    ...utf7,
+    ...sbcsCodec,
+    ...dbcsCodec,
+    ...sbcsData,
+    ...sbcsDataGenerated,
+    ...dbcsData
+};
