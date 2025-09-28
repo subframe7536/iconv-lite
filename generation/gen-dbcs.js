@@ -1,23 +1,35 @@
-var utils = require("./utils"), 
-    errTo = require("errto"),
-    async = require("async");
+import { getFile, parseText, writeTable, generateTable, writeFile } from './utils.js';
 
-async.parallel({
-    $big5: utils.getFile.bind(null, "http://encoding.spec.whatwg.org/index-big5.txt"), // Encodings with $ are not saved. They are used to calculate other encs.
-    $gbk:  utils.getFile.bind(null, "http://encoding.spec.whatwg.org/index-gb18030.txt"),
-    $gbRanges: utils.getFile.bind(null, "http://encoding.spec.whatwg.org/index-gb18030-ranges.txt"),
-    $eucKr: utils.getFile.bind(null, "http://encoding.spec.whatwg.org/index-euc-kr.txt"),
-    $jis0208: utils.getFile.bind(null, "http://encoding.spec.whatwg.org/index-jis0208.txt"),
-    $jis0212: utils.getFile.bind(null, "http://encoding.spec.whatwg.org/index-jis0212.txt"),
-    $cp932: utils.getFile.bind(null, "http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP932.TXT"),
-    cp936: utils.getFile.bind(null, "http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP936.TXT"),
-    cp949: utils.getFile.bind(null, "http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP949.TXT"),
-    cp950: utils.getFile.bind(null, "http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP950.TXT"),
-}, errTo(console.log, function(data) {
+async function wrapper(obj) {
+    const keys = Object.keys(obj);
+
+    const promises = keys.map(key => obj[key]);
+
+    const results = await Promise.all(promises);
+    const resultObj = {};
+    keys.forEach((key, index) => {
+        resultObj[key] = results[index];
+    });
+
+    return resultObj;
+}
+
+wrapper({
+    $big5: getFile("http://encoding.spec.whatwg.org/index-big5.txt"), // Encodings with $ are not saved. They are used to calculate other encs.
+    $gbk:  getFile("http://encoding.spec.whatwg.org/index-gb18030.txt"),
+    $gbRanges: getFile("http://encoding.spec.whatwg.org/index-gb18030-ranges.txt"),
+    $eucKr: getFile("http://encoding.spec.whatwg.org/index-euc-kr.txt"),
+    $jis0208: getFile("http://encoding.spec.whatwg.org/index-jis0208.txt"),
+    $jis0212: getFile("http://encoding.spec.whatwg.org/index-jis0212.txt"),
+    $cp932: getFile("http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP932.TXT"),
+    cp936: getFile("http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP936.TXT"),
+    cp949: getFile("http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP949.TXT"),
+    cp950: getFile("http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP950.TXT"),
+}).then(function(data) {
     // First, parse all files.
     for (var enc in data) {
         var dbcs = {};
-        utils.parseText(data[enc]).map(function(a) {
+        parseText(data[enc]).map(function(a) {
             var dbcsCode = parseInt(a[0]);
             var unicode = parseInt(a[1]);
             if (!isNaN(unicode))
@@ -34,7 +46,7 @@ async.parallel({
         if (trail < 0x40 || (0x7E < trail && trail < 0xA1) || trail > 0xFE) continue;
         var lead = i >> 8;
         var offset = (trail < 0x7F) ? 0x40 : 0x62;
-        var pointer = (lead - 0x81) * 157 + (trail - offset); 
+        var pointer = (lead - 0x81) * 157 + (trail - offset);
         var cpChar = data.cp950[i];
         var big5Char = data.$big5[pointer];
         if (big5Char !== undefined && cpChar != big5Char)
@@ -76,7 +88,7 @@ async.parallel({
     big5add[toIdx(1164)] = [0x00EA, 0x0304];
     big5add[toIdx(1166)] = [0x00EA, 0x030C];
 
-    utils.writeTable("big5-added", utils.generateTable(big5add));
+    writeTable("big5-added", generateTable(big5add));
 
     // Calculate difference between GB18030 encoding and cp936.
     // See http://encoding.spec.whatwg.org/#gb18030-encoder
@@ -86,7 +98,7 @@ async.parallel({
         if (trail < 0x40 || trail === 0x7F || trail > 0xFE) continue;
         var lead = i >> 8;
         var offset = (trail < 0x7F) ? 0x40 : 0x41;
-        var gbAddr = (lead - 0x81) * 190 + (trail - offset); 
+        var gbAddr = (lead - 0x81) * 190 + (trail - offset);
         var cpChar = data.cp936[i];
         var gbChar = data.$gbk[gbAddr];
         if ((cpChar !== undefined) && (cpChar != gbChar))
@@ -97,9 +109,9 @@ async.parallel({
     }
 
     // GB18030:2005 addition
-    gbk2005add = [['8135f437', '']];
+    const gbk2005add = [['8135f437', '']];
 
-    utils.writeTable("gbk-added", utils.generateTable(gbkadd).concat(gbk2005add));
+    writeTable("gbk-added", generateTable(gbkadd).concat(gbk2005add));
 
     // Write GB18030 ranges
     var ranges = { uChars: [], gbChars: [] };
@@ -107,7 +119,7 @@ async.parallel({
         ranges.uChars.push(data.$gbRanges[k]);
         ranges.gbChars.push(+k);
     }
-    utils.writeFile("gb18030-ranges", JSON.stringify(ranges));
+    writeFile("gb18030-ranges", JSON.stringify(ranges));
 
 
     // Use http://encoding.spec.whatwg.org/#shift_jis-decoder
@@ -131,7 +143,7 @@ async.parallel({
                 }
             }
 
-    utils.writeTable("shiftjis", utils.generateTable(shiftjis));
+    writeTable("shiftjis", generateTable(shiftjis));
 
     // Fill out EUC-JP table according to http://encoding.spec.whatwg.org/#euc-jp
     var eucJp = {};
@@ -144,8 +156,8 @@ async.parallel({
             eucJp[               (i << 8) + j] = data.$jis0208[(i - 0xA1) * 94 + (j - 0xA1)];
             eucJp[(0x8F << 16) + (i << 8) + j] = data.$jis0212[(i - 0xA1) * 94 + (j - 0xA1)];
         }
-            
-    utils.writeTable("eucjp", utils.generateTable(eucJp, 3));
+
+    writeTable("eucjp", generateTable(eucJp, 3));
 
 
     // Fill out EUC-KR Table and check that it is the same as cp949.
@@ -167,11 +179,9 @@ async.parallel({
 
     // Write all plain tables as-is.
     for (var enc in data)
-        if (enc[0] != "$") 
-            utils.writeTable(enc, utils.generateTable(data[enc]));
+        if (enc[0] != "$")
+            writeTable(enc, generateTable(data[enc]));
 
 
     console.log("DBCS encodings regenerated.");
-}));
-
-
+})

@@ -2,6 +2,7 @@
     "name": "iconv-lite",
     "description": "Convert character encodings in pure javascript.",
     "version": "0.7.0",
+    "type": "module",
     "license": "MIT",
     "keywords": [
         "iconv",
@@ -29,7 +30,8 @@
         "dist"
     ],
     "scripts": {
-        "build": "tsdown"
+        "build": "tsdown",
+        "update": "node generation/gen-sbcs.js && node generation/gen-dbcs.js"
     },
     "browser": {
         "stream": false
