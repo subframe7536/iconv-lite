@@ -1,5 +1,5 @@
 {
-  "name": "iconv-lite",
+  "name": "@subframe7536/iconv-lite",
   "description": "Convert character encodings in pure javascript.",
   "version": "0.7.0",
   "type": "module",
@@ -33,31 +33,33 @@
       ]
     }
   },
-  "homepage": "https://github.com/pillarjs/iconv-lite",
-  "bugs": "https://github.com/pillarjs/iconv-lite/issues",
+  "homepage": "https://github.com/subframe7536/iconv-lite",
+  "bugs": "https://github.com/subframe7536/iconv-lite/issues",
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/express"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pillarjs/iconv-lite.git"
+    "url": "https://github.com/subframe7536/iconv-lite.git"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=12"
   },
   "files": [
     "dist"
   ],
   "scripts": {
     "build": "tsdown",
-    "update": "node generation/gen-sbcs.js && node generation/gen-dbcs.js"
+    "update": "node generation/gen-sbcs.js && node generation/gen-dbcs.js",
+    "release": "bumpp --all && npm publish"
   },
   "browser": {
     "stream": false
   },
   "devDependencies": {
     "@types/node": "^24.5.2",
+    "bumpp": "^10.2.3",
     "iconv": "^2.3.5",
     "tsdown": "^0.15.5"
   }
