@@ -1,43 +1,64 @@
 {
-    "name": "iconv-lite",
-    "description": "Convert character encodings in pure javascript.",
-    "version": "0.7.0",
-    "type": "module",
-    "license": "MIT",
-    "keywords": [
-        "iconv",
-        "convert",
-        "charset",
-        "icu"
-    ],
-    "author": "Alexander Shtuchkin <ashtuchkin@gmail.com>",
-    "main": "./lib/index.js",
-    "typings": "./lib/index.d.ts",
-    "homepage": "https://github.com/pillarjs/iconv-lite",
-    "bugs": "https://github.com/pillarjs/iconv-lite/issues",
-    "funding": {
-      "type": "opencollective",
-      "url": "https://opencollective.com/express"
+  "name": "iconv-lite",
+  "description": "Convert character encodings in pure javascript.",
+  "version": "0.7.0",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "iconv",
+    "convert",
+    "charset",
+    "icu"
+  ],
+  "author": "Alexander Shtuchkin <ashtuchkin@gmail.com>",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/pillarjs/iconv-lite.git"
+    "./stream": {
+      "import": "./dist/stream.js",
+      "require": "./dist/stream.cjs"
     },
-    "engines": {
-        "node": ">=0.10.0"
-    },
-    "files": [
-        "dist"
-    ],
-    "scripts": {
-        "build": "tsdown",
-        "update": "node generation/gen-sbcs.js && node generation/gen-dbcs.js"
-    },
-    "browser": {
-        "stream": false
-    },
-    "devDependencies": {
-        "tsdown": "^0.15.5",
-        "iconv": "^2.3.5"
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./*"
+      ]
     }
+  },
+  "homepage": "https://github.com/pillarjs/iconv-lite",
+  "bugs": "https://github.com/pillarjs/iconv-lite/issues",
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/express"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pillarjs/iconv-lite.git"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "update": "node generation/gen-sbcs.js && node generation/gen-dbcs.js"
+  },
+  "browser": {
+    "stream": false
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "iconv": "^2.3.5",
+    "tsdown": "^0.15.5"
+  }
 }
