@@ -1,6 +1,6 @@
 # @subframe7536/iconv-lite
 
-This is a fork of [iconv-lite](https://github.com/ashtuchkin/iconv-lite) with the following changes:
+This is a fork of [iconv-lite@0.7.0](https://github.com/ashtuchkin/iconv-lite) with the following changes:
 
 - Remove dynamic encodings require
 - Replace `safer-buffer` with *global* `Buffer`
