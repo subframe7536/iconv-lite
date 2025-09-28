@@ -1,3 +1,13 @@
+# @subframe7536/iconv-lite
+
+This is a fork of [iconv-lite](https://github.com/ashtuchkin/iconv-lite) with the following changes:
+
+- Remove dynamic encodings require
+- Replace `safer-buffer` with *global* `Buffer`
+- Improved Typescript definitions
+- Move stream support into `/stream`
+- Add ESM build
+
 ## iconv-lite: Pure JS character encoding conversion
 
 [![NPM Version][npm-version-image]][npm-url]
