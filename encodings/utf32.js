@@ -1,6 +1,5 @@
 "use strict"
 
-var Buffer = require("safer-buffer").Buffer
 
 // == UTF32-LE/BE codec. ==========================================================
 
