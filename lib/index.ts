@@ -34,7 +34,7 @@ export function decode (buf: Buffer | Uint8Array, encoding: string, options?: Op
 // Search for a codec in iconv.encodings. Cache codec data in iconv._codecDataCache.
 const _codecDataCache: Record<string, Codec> = {}
 
-export const ICONV = {
+const ICONV = {
   defaultCharUnicode,
   defaultCharSingleByte,
   getEncoder,
@@ -87,7 +87,6 @@ export function getCodec (encoding: string): Codec {
         // The codec function must load all tables and return object with .encoder and .decoder methods.
         // It'll be called only once (for each different options object).
         //
-        // @ts-expect-error: codecDef may not strictly match the expected constructor type due to dynamic codec definitions.
         codec = new codecDef(codecOptions, ICONV)
 
         _codecDataCache[codecOptions.encodingName] = codec // Save it to be reused later.
