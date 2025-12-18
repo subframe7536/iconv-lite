@@ -43,7 +43,7 @@ InternalCodec.prototype.decoder = InternalDecoder
 // ------------------------------------------------------------------------------
 
 // We use node.js internal decoder. Its signature is the same as ours.
-var StringDecoder = require("string_decoder").StringDecoder
+import { StringDecoder } from 'string_decoder'
 
 function InternalDecoder (options, codec) {
   this.decoder = new StringDecoder(codec.enc)
