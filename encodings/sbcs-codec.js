@@ -1,5 +1,5 @@
 "use strict"
-
+import { Buffer } from "buffer"
 // Single-byte codec. Needs a 'chars' string parameter that contains 256 or 128 chars that
 // correspond to encoded bytes (if 128 - then lower half is ASCII).
 

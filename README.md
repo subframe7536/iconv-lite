@@ -3,7 +3,9 @@
 This is a fork of [iconv-lite@0.7.0](https://github.com/ashtuchkin/iconv-lite) with the following changes:
 
 - Remove dynamic encodings require
-- Replace `safer-buffer` with *global* `Buffer`
+- Drop `safer-buffer`
+  - In v0.8.0, use global `Buffer` class
+  - In v0.8.1, use `import { Buffer } from "buffer"`
 - Improved Typescript definitions
 - Move stream support into `/stream`
 - Add ESM build

@@ -1,6 +1,7 @@
 import { Transform, type TransformOptions, type TransformCallback } from "stream"
 import type { IEncoder, IDecoder } from "./type.ts"
 import { getEncoder, getDecoder } from "./index.ts"
+import { Buffer } from "buffer"
 
 export class IconvLiteEncoderStream extends Transform {
   private encoder: IEncoder

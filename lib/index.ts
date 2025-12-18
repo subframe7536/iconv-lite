@@ -1,6 +1,7 @@
 import { PrependBOMWrapper, StripBOMWrapper } from "./bom-handling.ts"
 import _encodings from "../encodings/index.js"
 import type { IEncoder, IDecoder, Options, Codec } from "./type.ts"
+import { Buffer } from "buffer"
 
 // All codecs and aliases are kept here, keyed by encoding name/alias.
 // They are lazy loaded in `iconv.getCodec` from `encodings/index.js`.

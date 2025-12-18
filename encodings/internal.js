@@ -1,5 +1,5 @@
 "use strict"
-
+import { Buffer } from "buffer"
 // Export Node.js internal encodings.
 
 module.exports = {

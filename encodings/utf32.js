@@ -1,5 +1,5 @@
 "use strict"
-
+import { Buffer } from "buffer"
 
 // == UTF32-LE/BE codec. ==========================================================
 
